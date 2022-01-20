@@ -16,9 +16,7 @@
 // open (bool)
 // status_text (string)
 
-module.exports = function (app, models) {
-    const [Project, Issue] = models;
-
+module.exports = function (app, Issue) {
     app.route('/api/issues/:project')
 
         // Must be able to...
@@ -28,7 +26,7 @@ module.exports = function (app, models) {
         .get(function (req, res) {
             let project = req.params.project;
             Issue.find({ project_name: project })
-                .then((issues) => res.send(issues))
+                .then((project) => res.send(project.issues))
                 .catch((error) => console.log(error));
         })
 
