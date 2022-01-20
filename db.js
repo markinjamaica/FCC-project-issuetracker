@@ -19,6 +19,7 @@ module.exports = () => {
     });
 
     const projectSchema = new Schema({
+        project_name: String,
         issues: [issueSchema],
     });
 
