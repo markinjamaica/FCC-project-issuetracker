@@ -20,23 +20,52 @@ module.exports = function (app, Issue) {
     app.route('/api/issues/:project')
 
         // Must be able to...
-        // -view issues on a project -CHECK
+        // CHECK -view issues on a project
         // -view issues on a project with one filter
         // -view issues on a project with multiple filters
         .get(function (req, res) {
             let project = req.params.project;
             Issue.find({ project_name: project })
-                .then((project) => res.send(project.issues))
+                .then((issues) => res.send(issues))
                 .catch((error) => console.log(error));
         })
 
         // Must be able to...
-        // -create an issue with every field
-        // -create an issue with only required fields (title, text, created by)
-        // -create an issue with missing required fields (error)
+        // CHECK -create an issue with every field
+        // CHECK -create an issue with only required fields (title, text, created by)
+        // CHECK -create an issue with missing required fields (error)
         .post(function (req, res) {
             let project = req.params.project;
-            const issue = new Issue({});
+            const title = req.body.issue_title;
+            const text = req.body.issue_text;
+            const creator = req.body.created_by;
+
+            if (!title || !text || !creator) {
+                res.send('error');
+            }
+            let date = new Date();
+
+            console.log(req.body);
+
+            const issue = new Issue({
+                project_name: project,
+                issue_title: req.body.issue_title,
+                issue_text: req.body.issue_text,
+                created_by: req.body.created_by,
+                assigned_to: req.body.assigned_to,
+                open: true,
+                status_text: req.body.status_text,
+                created_on: date,
+                updated_on: date,
+            });
+            issue
+                .save()
+                .then((issue) => {
+                    Issue.findOne({ _id: issue._id })
+                        .select('-project_name -__v')
+                        .then((issue) => res.send(issue));
+                })
+                .catch((error) => console.log(error));
         })
 
         // Must be able to...
