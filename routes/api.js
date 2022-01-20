@@ -16,15 +16,18 @@
 // open (bool)
 // status_text (string)
 
-module.exports = function (app) {
+module.exports = function (app, Issue) {
     app.route('/api/issues/:project')
 
         // Must be able to...
-        // -view issues on a project
+        // -view issues on a project -CHECK
         // -view issues on a project with one filter
         // -view issues on a project with multiple filters
         .get(function (req, res) {
             let project = req.params.project;
+            Issue.find({ project_name: project })
+                .then((issues) => res.send(issues))
+                .catch((error) => console.log(error));
         })
 
         // Must be able to...
