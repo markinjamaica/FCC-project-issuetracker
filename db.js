@@ -8,7 +8,6 @@ module.exports = () => {
     const { Schema, model } = mongoose;
 
     const issueSchema = new Schema({
-        project_name: String,
         issue_title: String,
         issue_text: String,
         created_on: Date,
@@ -19,8 +18,13 @@ module.exports = () => {
         status_text: String,
     });
 
-    // Define model
+    const projectSchema = new Schema({
+        issues: [issueSchema],
+    });
+
+    // Define models
+    const Project = model('Project', projectSchema);
     const Issue = model('Issue', issueSchema);
 
-    return Issue;
+    return [Project, Issue];
 };

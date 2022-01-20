@@ -11,7 +11,7 @@ const fccTestingRoutes = require('./routes/fcctesting.js');
 const runner = require('./test-runner');
 
 const db = require('./db');
-const IssueModel = db();
+const models = db();
 
 let app = express();
 
@@ -34,7 +34,7 @@ app.route('/').get(function (req, res) {
 fccTestingRoutes(app);
 
 //Routing for API
-apiRoutes(app, IssueModel);
+apiRoutes(app, models);
 
 //404 Not Found Middleware
 app.use(function (req, res, next) {
