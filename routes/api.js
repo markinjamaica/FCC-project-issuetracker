@@ -53,8 +53,6 @@ module.exports = function (app, Issue) {
             }
             let date = new Date();
 
-            console.log(req.body);
-
             const issue = new Issue({
                 project_name: project,
                 issue_title: req.body.issue_title,
