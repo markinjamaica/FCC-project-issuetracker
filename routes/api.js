@@ -21,11 +21,19 @@ module.exports = function (app, Issue) {
 
         // Must be able to...
         // CHECK -view issues on a project
-        // -view issues on a project with one filter
-        // -view issues on a project with multiple filters
+        // CHECK -view issues on a project with one filter
+        // CHECK -view issues on a project with multiple filters
         .get(function (req, res) {
-            let project = req.params.project;
-            Issue.find({ project_name: project })
+            let obj = {};
+
+            // populate object with properties to search for
+            obj.project_name = req.params.project;
+            for (const property in req.query) {
+                obj[property] = req.query[property];
+            }
+
+            Issue.find(obj)
+                .select('-project_name -__v')
                 .then((issues) => res.send(issues))
                 .catch((error) => console.log(error));
         })
