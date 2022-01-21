@@ -49,7 +49,7 @@ module.exports = function (app, Issue) {
             const creator = req.body.created_by;
 
             if (!title || !text || !creator) {
-                res.send('error');
+                return res.json({ error: 'required field(s) missing' });
             }
             let date = new Date();
 
