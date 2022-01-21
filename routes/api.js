@@ -75,13 +75,24 @@ module.exports = function (app, Issue) {
         })
 
         // Must be able to...
-        // -update one field on an issue
-        // -update multiple fields on an issue
-        // -update an issue with missing _id (error)
-        // -update an issue with no fields to update (error)
-        // -update an issue with an invalid _id (error)
+        // CHECK -update one field on an issue
+        // CHECK -update multiple fields on an issue
+        // CHECK -update an issue with missing _id (error)
+        // CHECK -update an issue with no fields to update (error)
+        // CHECK -update an issue with an invalid _id (error)
         .put(function (req, res) {
-            let project = req.params.project;
+            // Update issue
+            Issue.findById(req.body._id)
+                .select('-project_name -__v')
+                .then((issue) => {
+                    for (const property in req.body) {
+                        if (req.body[property]) {
+                            issue[property] = req.body[property];
+                        }
+                    }
+                    issue.save().then((issue) => res.send(issue));
+                })
+                .catch((error) => res.json({ error: error.message }));
         })
 
         // Must be able to...
