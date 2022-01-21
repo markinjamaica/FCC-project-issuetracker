@@ -96,10 +96,20 @@ module.exports = function (app, Issue) {
         })
 
         // Must be able to...
-        // -delete an issue
-        // -delete an issue with an invalid _id (error)
-        // -delete an issue with missing _id (error)
+        // CHECK -delete an issue
+        // CHECK -delete an issue with an invalid _id (error)
+        // CHECK -delete an issue with missing _id (error)
         .delete(function (req, res) {
             let project = req.params.project;
+
+            Issue.deleteOne({ _id: req.body._id })
+                .select('-project_name -__v')
+                .then(() =>
+                    res.json({
+                        result: 'successfully deleted',
+                        _id: req.body._id,
+                    })
+                )
+                .catch((error) => res.json({ error: error.message }));
         });
 };
