@@ -5,8 +5,24 @@ const server = require('../server');
 
 chai.use(chaiHttp);
 
+// all requests to /api/issues/{project}
 suite('Functional Tests', function () {
     // 1. Create an issue with every field
+    test('create an issue with every field', (done) => {
+        chai.request(server)
+            .post('/api/issues/test')
+            .send({
+                issue_title: 'Problem',
+                issue_text: 'its real bad',
+                created_by: 'Mark',
+                assigned_to: 'Someone Else',
+                status_text: 'needs review',
+            })
+            .end((err, res) => {
+                assert.equal(res.status, 200);
+                done();
+            });
+    });
     // 2. Create an issue with only required fields
     // 3. Create an issue with missing required fields
     // 4. View issues on a project
