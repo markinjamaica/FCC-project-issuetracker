@@ -127,16 +127,24 @@ module.exports = function (app, Issue) {
         // CHECK -delete an issue with an invalid _id (error)
         // CHECK -delete an issue with missing _id (error)
         .delete(function (req, res) {
-            let project = req.params.project;
+            const id = req.body._id;
+            if (!id) {
+                return res.json({ error: 'missing _id' });
+            }
 
-            Issue.deleteOne({ _id: req.body._id })
-                .select('-project_name -__v')
-                .then(() =>
+            Issue.findById(id)
+                .deleteOne()
+                .then((object) => {
+                    if (object.deletedCount !== 1) {
+                        throw new Error('Not deleted');
+                    }
                     res.json({
                         result: 'successfully deleted',
-                        _id: req.body._id,
-                    })
-                )
-                .catch((error) => res.json({ error: error.message }));
+                        _id: id,
+                    });
+                })
+                .catch((error) =>
+                    res.json({ error: 'could not delete', _id: id })
+                );
         });
 };
