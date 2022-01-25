@@ -1,28 +1,8 @@
 'use strict';
 
-// TODO: create project database, figure out schema...sub-schemas...
-
-// Each PROJECT may have:
-// multiple issues (object)
-
-// Each ISSUE will have:
-// _id (auto-created)
-// issue_title (string)
-// issue_text (string)
-// created_on (date object)
-// updated_on (date object)
-// created_by (string)
-// assigned_to (string)
-// open (bool)
-// status_text (string)
-
 module.exports = function (app, Issue) {
     app.route('/api/issues/:project')
 
-        // Must be able to...
-        // CHECK -view issues on a project
-        // CHECK -view issues on a project with one filter
-        // CHECK -view issues on a project with multiple filters
         .get(function (req, res) {
             let obj = {};
 
@@ -38,10 +18,6 @@ module.exports = function (app, Issue) {
                 .catch((error) => console.log(error));
         })
 
-        // Must be able to...
-        // CHECK -create an issue with every field
-        // CHECK -create an issue with only required fields (title, text, created by)
-        // CHECK -create an issue with missing required fields (error)
         .post(function (req, res) {
             let project = req.params.project;
             const title = req.body.issue_title;
@@ -74,14 +50,6 @@ module.exports = function (app, Issue) {
                 .catch((error) => console.log(error));
         })
 
-        // Must be able to...
-        // CHECK -update one field on an issue
-        // CHECK -update multiple fields on an issue
-        // CHECK -update an issue with missing _id (error)
-        // CHECK -update an issue with no fields to update (error)
-        // CHECK -update an issue with an invalid _id (error)
-
-        // TODO: change responses <---------------------------------
         .put(function (req, res) {
             const id = req.body._id;
 
@@ -96,6 +64,7 @@ module.exports = function (app, Issue) {
                 .then((issue) => {
                     let propValues = 0;
                     for (const property in req.body) {
+                        // update values
                         if (req.body[property] !== '' && property !== '_id') {
                             issue[property] = req.body[property];
                             propValues++;
@@ -122,10 +91,6 @@ module.exports = function (app, Issue) {
                 );
         })
 
-        // Must be able to...
-        // CHECK -delete an issue
-        // CHECK -delete an issue with an invalid _id (error)
-        // CHECK -delete an issue with missing _id (error)
         .delete(function (req, res) {
             const id = req.body._id;
             if (!id) {
