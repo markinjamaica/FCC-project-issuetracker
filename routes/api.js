@@ -80,19 +80,46 @@ module.exports = function (app, Issue) {
         // CHECK -update an issue with missing _id (error)
         // CHECK -update an issue with no fields to update (error)
         // CHECK -update an issue with an invalid _id (error)
+
+        // TODO: change responses <---------------------------------
         .put(function (req, res) {
+            const id = req.body._id;
+
+            // Check for missing id
+            if (!id) {
+                return res.json({ error: 'missing _id' });
+            }
+
             // Update issue
-            Issue.findById(req.body._id)
+            Issue.findById(id)
                 .select('-project_name -__v')
                 .then((issue) => {
+                    let propValues = 0;
                     for (const property in req.body) {
-                        if (req.body[property]) {
+                        if (req.body[property] !== '' && property !== '_id') {
                             issue[property] = req.body[property];
+                            propValues++;
                         }
                     }
-                    issue.save().then((issue) => res.send(issue));
+
+                    // Check if no properties updated
+                    if (propValues === 0) {
+                        return res.json({
+                            error: 'no update field(s) sent',
+                            _id: id,
+                        });
+                    }
+
+                    issue.save().then((issue) =>
+                        res.json({
+                            result: 'successfully updated',
+                            _id: issue._id,
+                        })
+                    );
                 })
-                .catch((error) => res.json({ error: error.message }));
+                .catch((error) =>
+                    res.json({ error: 'could not update', _id: id })
+                );
         })
 
         // Must be able to...
