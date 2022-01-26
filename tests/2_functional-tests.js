@@ -38,6 +38,18 @@ suite('Functional Tests', function () {
             });
     });
     // 3. Create an issue with missing required fields
+    test('create an issue with missing required fields', (done) => {
+        chai.request(server)
+            .post('/api/issues/test')
+            .send({
+                issue_title: 'Only have a title',
+            })
+            .end((err, res) => {
+                assert.equal(res.status, 200);
+                assert.equal(res.text, '{"error":"required field(s) missing"}');
+                done();
+            });
+    });
     // 4. View issues on a project
     // 5. View issues on a project with one filter
     // 6. View issues on a project with multiple filters
