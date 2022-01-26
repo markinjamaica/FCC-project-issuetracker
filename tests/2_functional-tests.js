@@ -118,6 +118,17 @@ suite('Functional Tests', function () {
             });
     });
     // 10. Update an issue with no fields to update
+    test('update an issue with no fields to update', (done) => {
+        chai.request(server)
+            .put('/api/issues/test')
+            .send({
+                _id: '61f116af5e0b8e00c46e165d',
+            })
+            .end((err, res) => {
+                assert.equal(res.status, 200);
+                done();
+            });
+    });
     // 11. Update an issue with an invalid _id
     // 12. Delete an issue
     // 13. Delete an issue with an invalid _id
