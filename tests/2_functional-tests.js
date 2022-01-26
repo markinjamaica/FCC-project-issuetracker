@@ -130,6 +130,21 @@ suite('Functional Tests', function () {
             });
     });
     // 11. Update an issue with an invalid _id
+    test('update an issue with an invalid_id', (done) => {
+        chai.request(server)
+            .put('/api/issues/test')
+            .send({
+                _id: 'invalid id',
+            })
+            .end((err, res) => {
+                assert.equal(res.status, 200);
+                assert.equal(
+                    res.text,
+                    '{"error":"could not update","_id":"invalid id"}'
+                );
+                done();
+            });
+    });
     // 12. Delete an issue
     // 13. Delete an issue with an invalid _id
     // 14. Delete an issue with missing _id
