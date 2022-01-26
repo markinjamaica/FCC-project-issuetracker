@@ -5,6 +5,8 @@ const server = require('../server');
 
 chai.use(chaiHttp);
 
+let testId = '';
+
 // all requests to /api/issues/{project}
 suite('Functional Tests', function () {
     // 1. Create an issue with every field
@@ -20,6 +22,7 @@ suite('Functional Tests', function () {
             })
             .end((err, res) => {
                 assert.equal(res.status, 200);
+                testId = res.body._id;
                 done();
             });
     });
@@ -82,7 +85,7 @@ suite('Functional Tests', function () {
         chai.request(server)
             .put('/api/issues/test')
             .send({
-                _id: '61f116af5e0b8e00c46e165d',
+                _id: testId,
                 issue_text: 'biiggg problem',
             })
             .end((err, res) => {
@@ -95,7 +98,7 @@ suite('Functional Tests', function () {
         chai.request(server)
             .put('/api/issues/test')
             .send({
-                _id: '61f116af5e0b8e00c46e165d',
+                _id: testId,
                 issue_text: 'oh no',
                 assigned_to: 'Wilbur',
             })
@@ -122,7 +125,7 @@ suite('Functional Tests', function () {
         chai.request(server)
             .put('/api/issues/test')
             .send({
-                _id: '61f116af5e0b8e00c46e165d',
+                _id: testId,
             })
             .end((err, res) => {
                 assert.equal(res.status, 200);
