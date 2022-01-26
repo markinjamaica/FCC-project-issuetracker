@@ -60,6 +60,14 @@ suite('Functional Tests', function () {
             });
     });
     // 5. View issues on a project with one filter
+    test('view project issues w/ 1 filter', (done) => {
+        chai.request(server)
+            .get('/api/issues/test?open=true')
+            .end((err, res) => {
+                assert.equal(res.status, 200);
+                done();
+            });
+    });
     // 6. View issues on a project with multiple filters
     // 7. Update one field on an issue
     // 8. Update multiple fields on an issue
