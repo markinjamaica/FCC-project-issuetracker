@@ -51,6 +51,14 @@ suite('Functional Tests', function () {
             });
     });
     // 4. View issues on a project
+    test('view issues on a project', (done) => {
+        chai.request(server)
+            .get('/api/issues/test')
+            .end((err, res) => {
+                assert.equal(res.status, 200);
+                done();
+            });
+    });
     // 5. View issues on a project with one filter
     // 6. View issues on a project with multiple filters
     // 7. Update one field on an issue
