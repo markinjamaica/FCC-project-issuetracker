@@ -69,6 +69,14 @@ suite('Functional Tests', function () {
             });
     });
     // 6. View issues on a project with multiple filters
+    test('view project issues multiple filters', (done) => {
+        chai.request(server)
+            .get('/api/issues/test?open=true&assigned_to=fred')
+            .end((err, res) => {
+                assert.equal(res.status, 200);
+                done();
+            });
+    });
     // 7. Update one field on an issue
     // 8. Update multiple fields on an issue
     // 9. Update an issue with missing _id
