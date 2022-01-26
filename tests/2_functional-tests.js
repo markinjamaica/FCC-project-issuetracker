@@ -169,5 +169,20 @@ suite('Functional Tests', function () {
             });
     });
     // 13. Delete an issue with an invalid _id
+    test('delete an issue with an invalid id', (done) => {
+        chai.request(server)
+            .delete('/api/issues/test')
+            .send({
+                _id: 'not a valid id',
+            })
+            .end((err, res) => {
+                assert.equal(res.status, 200);
+                assert.equal(
+                    res.text,
+                    '{"error":"could not delete","_id":"not a valid id"}'
+                );
+                done();
+            });
+    });
     // 14. Delete an issue with missing _id
 });
