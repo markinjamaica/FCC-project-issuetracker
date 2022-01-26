@@ -149,6 +149,21 @@ suite('Functional Tests', function () {
             });
     });
     // 12. Delete an issue
+    test('delete an issue', (done) => {
+        chai.request(server)
+            .delete('/api/issues/test')
+            .send({
+                _id: testId,
+            })
+            .end((err, res) => {
+                assert.equal(res.status, 200);
+                assert.equal(
+                    res.text,
+                    `{"result":"successfully deleted","_id":"${testId}"}`
+                );
+                done();
+            });
+    });
     // 13. Delete an issue with an invalid _id
     // 14. Delete an issue with missing _id
 });
