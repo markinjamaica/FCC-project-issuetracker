@@ -129,6 +129,10 @@ suite('Functional Tests', function () {
             })
             .end((err, res) => {
                 assert.equal(res.status, 200);
+                assert.equal(
+                    res.text,
+                    `{"error":"no update field(s) sent","_id":"${testId}"}`
+                );
                 done();
             });
     });
