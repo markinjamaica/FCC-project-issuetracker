@@ -185,4 +185,13 @@ suite('Functional Tests', function () {
             });
     });
     // 14. Delete an issue with missing _id
+    test('delete an issue with a missing id', (done) => {
+        chai.request(server)
+            .delete('/api/issues/test')
+            .end((err, res) => {
+                assert.equal(res.status, 200);
+                assert.equal(res.text, '{"error":"missing _id"}');
+                done();
+            });
+    });
 });
