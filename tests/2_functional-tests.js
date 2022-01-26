@@ -91,6 +91,19 @@ suite('Functional Tests', function () {
             });
     });
     // 8. Update multiple fields on an issue
+    test('update multiple issue fields', (done) => {
+        chai.request(server)
+            .put('/api/issues/test')
+            .send({
+                _id: '61f116af5e0b8e00c46e165d',
+                issue_text: 'oh no',
+                assigned_to: 'Wilbur',
+            })
+            .end((err, res) => {
+                assert.equal(res.status, 200);
+                done();
+            });
+    });
     // 9. Update an issue with missing _id
     // 10. Update an issue with no fields to update
     // 11. Update an issue with an invalid _id
