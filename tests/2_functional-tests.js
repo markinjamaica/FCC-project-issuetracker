@@ -24,6 +24,19 @@ suite('Functional Tests', function () {
             });
     });
     // 2. Create an issue with only required fields
+    test('create an issue with only required fields', (done) => {
+        chai.request(server)
+            .post('/api/issues/test')
+            .send({
+                issue_title: 'Another problem',
+                issue_text: 'its real bad',
+                created_by: 'Mark',
+            })
+            .end((err, res) => {
+                assert.equal(res.status, 200);
+                done();
+            });
+    });
     // 3. Create an issue with missing required fields
     // 4. View issues on a project
     // 5. View issues on a project with one filter
