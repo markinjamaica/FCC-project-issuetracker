@@ -105,6 +105,18 @@ suite('Functional Tests', function () {
             });
     });
     // 9. Update an issue with missing _id
+    test('update an issue w/ missing _id', (done) => {
+        chai.request(server)
+            .put('/api/issues/test')
+            .send({
+                issue_text: 'hi',
+            })
+            .end((err, res) => {
+                assert.equal(res.status, 200);
+                assert.equal(res.text, '{"error":"missing _id"}');
+                done();
+            });
+    });
     // 10. Update an issue with no fields to update
     // 11. Update an issue with an invalid _id
     // 12. Delete an issue
