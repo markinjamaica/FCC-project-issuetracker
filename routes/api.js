@@ -36,7 +36,7 @@ module.exports = function (app, Issue) {
                 created_by: req.body.created_by,
                 assigned_to: req.body.assigned_to,
                 open: true,
-                status_text: req.body.status_text,
+                status_text: req.body.status_text || '',
                 created_on: date,
                 updated_on: date,
             });
