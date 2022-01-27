@@ -77,6 +77,8 @@ module.exports = function (app, Issue) {
                             error: 'no update field(s) sent',
                             _id: id,
                         });
+                    } else {
+                        issue.updated_on = new Date();
                     }
 
                     issue.save().then((issue) =>
